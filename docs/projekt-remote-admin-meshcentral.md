@@ -38,7 +38,7 @@ vollständig zu kappen.
   aus Teil 2).
 - Aufgaben:
   1. Docker/Docker Compose auf dem Zielhost prüfen/installieren.
-  2. `docker-compose.yml` mit dem offiziellen Image `meshcentral/meshcentral`
+  2. `docker-compose.yml` mit dem offiziellen Image `ghcr.io/ylianst/meshcentral`
      ausrollen, Datenverzeichnis als Volume mounten (Persistenz der
      Gerätedaten + Session-Logs).
   3. Konfigurationsdatei (`config.json`) so setzen, dass:
@@ -51,6 +51,9 @@ vollständig zu kappen.
   4. Admin-Account für die Web-Oberfläche anlegen.
 - Ergebnis: Eine LAN-IP + Port, unter der der MeshCentral-Server läuft,
   sowie ein API-Token.
+- **Umsetzung:** [`deploy/meshcentral/`](../deploy/meshcentral/README.md)
+  (`docker-compose.yml`, `config.json.template`, `install.sh`,
+  `create-claude-user.sh`). Hostspezifische Werte stehen in `.env`.
 
 ---
 
@@ -125,5 +128,6 @@ Einträge zusammen.
 
 ## Nächster Schritt
 
-Sobald Punkt 1 geklärt ist, kann ich das `docker-compose.yml` +
-`config.json` für Projektteil 1 konkret ausarbeiten.
+Projektteil 1 liegt unter `deploy/meshcentral/` bereit. Sobald Punkt 1
+geklärt ist, werden LAN-IP und Netz in `.env` eingetragen und
+`install.sh` auf dem Host ausgeführt.

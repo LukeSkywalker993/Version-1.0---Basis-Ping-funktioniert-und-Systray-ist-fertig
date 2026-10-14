@@ -1,0 +1,50 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Ylianst/MeshCentral/master/meshcentral-config-schema.json",
+  "__comment__": "Wird von install.sh aus .env gerendert nach meshcentral-data/config.json. Nicht direkt dort editieren, sondern hier und install.sh erneut ausführen.",
+  "settings": {
+    "cert": "${MESH_HOST}",
+    "port": 443,
+    "aliasPort": ${MESH_PORT},
+    "redirPort": 0,
+    "mpsPort": 0,
+    "exactPorts": true,
+    "selfUpdate": false,
+    "plugins": { "enabled": false },
+    "allowLoginToken": false,
+    "allowFraming": false,
+    "cookieIpCheck": "strict",
+    "authLog": "/opt/meshcentral/meshcentral-data/auth.log",
+    "maxInvalidLogin": { "time": 10, "count": 5, "coolofftime": 30 },
+    "autoBackup": {
+      "backupPath": "/opt/meshcentral/meshcentral-backups",
+      "backupIntervalHours": 24,
+      "keepLastDaysBackup": 14
+    }
+  },
+  "domains": {
+    "": {
+      "title": "MeshCentral LAN",
+      "newAccounts": false,
+      "userAllowedIP": "${MESH_LAN_CIDR}",
+      "agentAllowedIP": "${MESH_LAN_CIDR}",
+      "novnc": false,
+      "mstsc": false,
+      "ssh": false,
+      "geoLocation": false,
+      "passwordRequirements": {
+        "min": 12,
+        "upper": 1,
+        "lower": 1,
+        "numeric": 1,
+        "nonalpha": 1,
+        "loginTokens": ["user//${MESH_API_USER}"]
+      },
+      "sessionRecording": {
+        "filepath": "/opt/meshcentral/meshcentral-recordings",
+        "index": true,
+        "maxRecordingDays": ${MESH_RECORDING_DAYS},
+        "protocols": [1, 2, 5, 6, 8, 9]
+      }
+    }
+  }
+}

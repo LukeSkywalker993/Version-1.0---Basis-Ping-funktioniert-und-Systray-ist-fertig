@@ -1,0 +1,7 @@
+# Laufzeitdaten und Geheimnisse bleiben auf dem Host
+.env
+secrets/
+meshcentral-data/
+meshcentral-files/
+meshcentral-backups/
+meshcentral-recordings/
