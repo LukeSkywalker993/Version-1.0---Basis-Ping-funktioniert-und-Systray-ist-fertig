@@ -2,12 +2,12 @@
 # Läuft auf einem separaten Linux-Host im LAN, NICHT auf dem Windows-Server.
 # Werte kommen aus .env (Vorlage: .env.example). Erstinstallation: ./install.sh
 
-name: meshcentral
+name: 12ps_claude_remote
 
 services:
   meshcentral:
     image: ghcr.io/ylianst/meshcentral:${MESHCENTRAL_VERSION:?MESHCENTRAL_VERSION fehlt in .env}
-    container_name: meshcentral
+    container_name: 12ps_claude_remote
     restart: unless-stopped
     environment:
       # Eigene config.json verwenden, Container soll sie nicht überschreiben.

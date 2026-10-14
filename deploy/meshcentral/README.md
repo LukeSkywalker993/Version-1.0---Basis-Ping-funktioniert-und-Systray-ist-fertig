@@ -71,7 +71,7 @@ Ergebnis: Weboberfläche unter `https://<MESH_HOST>:<MESH_PORT>` (Login mit
 
 **Ein manueller Schritt bleibt:** Das Recht „Kein Desktop“ lässt sich über
 `meshctrl` nicht setzen. In der Weboberfläche: *Meine Geräte* > Gruppe
-`Windows-Server` > Benutzer `claude-api` bearbeiten > **Kein Desktop** anhaken.
+`12ps_claude_remote` > Benutzer `claude-api` bearbeiten > **Kein Desktop** anhaken.
 Danach bleibt Claude wirklich nur das Terminal.
 
 ## Betrieb

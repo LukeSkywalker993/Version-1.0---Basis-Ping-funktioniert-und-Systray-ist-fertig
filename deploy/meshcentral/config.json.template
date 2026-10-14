@@ -23,7 +23,13 @@
   },
   "domains": {
     "": {
-      "title": "MeshCentral LAN",
+      "title": "12ps_claude_remote",
+      "agentCustomization": {
+        "displayName": "12ps_claude_remote Agent",
+        "description": "12ps_claude_remote Fernwartungs-Agent (MeshCentral)",
+        "companyName": "12ps_claude_remote",
+        "serviceName": "12ps_claude_remote"
+      },
       "newAccounts": false,
       "userAllowedIP": "${MESH_LAN_CIDR}",
       "agentAllowedIP": "${MESH_LAN_CIDR}",
