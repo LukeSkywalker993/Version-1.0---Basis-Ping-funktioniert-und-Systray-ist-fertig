@@ -7,17 +7,6 @@ $FP = 'SHA256:bDD7P2qK9y5/nRFxA9R/1DHlamjWNNLGkY3zq0YtcuY'
 $noBom = New-Object System.Text.UTF8Encoding $false
 function Fail($m) { Write-Host "`nFEHLER: $m" -ForegroundColor Red; Stop-Transcript | Out-Null; exit 1 }
 
-# Neue Programmversion aus Teilen zusammensetzen (falls vorhanden)
-$parts = @(Get-ChildItem $dir -Filter '12ps_claude_remote.exe.teil*' | Sort-Object Name)
-if ($parts.Count -gt 0) {
-  $exe = Join-Path $dir '12ps_claude_remote.exe'
-  $fs = [IO.File]::Create($exe)
-  foreach ($p in $parts) { $b = [IO.File]::ReadAllBytes($p.FullName); $fs.Write($b, 0, $b.Length) }
-  $fs.Close()
-  if ((Get-FileHash $exe -Algorithm SHA256).Hash -eq $ExpectedHash) { $parts | Remove-Item -Force; Write-Host "Neue 12ps_claude_remote.exe ist fertig." }
-  else { Write-Host "WARNUNG: exe-Pruefsumme stimmt nicht." -ForegroundColor Yellow }
-}
-
 Write-Host "1/5 Pruefe Host-Schluessel von $H ..."
 $kh = Join-Path $env:TEMP '12ps_known_hosts'; $tmpk = Join-Path $env:TEMP '12ps_k.pub'
 $match = @()
@@ -40,7 +29,7 @@ $b = New-Object byte[] 20; (New-Object Security.Cryptography.RNGCryptoServicePro
 $pw = (-join ($b | ForEach-Object { $chars[$_ % $chars.Length] })) + 'Aa1-'
 $st = Join-Path $env:TEMP '12ps_stage'
 Remove-Item $st -Recurse -Force -ErrorAction SilentlyContinue
-Copy-Item (Join-Path $dir 'meshcentral-server') $st -Recurse
+Copy-Item ($dir) $st -Recurse
 $envTxt = [IO.File]::ReadAllText((Join-Path $st '.env.example')) -replace 'MESH_ADMIN_PASS=CHANGE_ME', "MESH_ADMIN_PASS=$pw"
 [IO.File]::WriteAllText((Join-Path $st '.env.neu'), $envTxt, $noBom)
 $tar = Join-Path $env:TEMP '12ps_mc.tar'
