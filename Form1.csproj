@@ -8,4 +8,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <!-- Eigenständiges Projekt, wird separat gebaut -->
+    <Compile Remove="windows-agent/**" />
+    <EmbeddedResource Remove="windows-agent/**" />
+    <None Remove="windows-agent/**" />
+  </ItemGroup>
+
 </Project>

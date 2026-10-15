@@ -61,6 +61,17 @@ else
   printf 'token_user=%s\ntoken_pass=%s\nserver=wss://%s:%s\n' "$TOKEN_USER" "$TOKEN_PASS" "$MESH_HOST" "$MESH_PORT" >> "$SECRET_FILE"
 fi
 
+# 5. Konfigdatei für das Windows-Programm (windows-agent/): Server + Gruppen-Schlüssel (meshid).
+#    Die meshid erlaubt nur das Herunterladen/Registrieren des Agents in dieser Gruppe.
+GROUP_KEY=$(ctl_admin listdevicegroups | grep -F "\"${MESH_DEVICE_GROUP}\"" | head -1 | cut -d'"' -f2)
+if [[ ${#GROUP_KEY} -eq 64 ]]; then
+  printf '{\n  "server": "%s",\n  "groupKey": "%s"\n}\n' "${MESH_HOST}$( [[ "$MESH_PORT" != 443 ]] && echo ":$MESH_PORT" )" "$GROUP_KEY" > secrets/12ps_claude_remote.json
+  chmod 600 secrets/12ps_claude_remote.json
+  echo "Konfig für das Windows-Programm: $(pwd)/secrets/12ps_claude_remote.json (neben die .exe legen)"
+else
+  echo "WARNUNG: Gruppen-Schlüssel nicht ermittelt, Windows-Programm braucht ihn manuell." >&2
+fi
+
 echo
 echo "Fertig. Zugangsdaten für Projektteil 3 liegen in: $(pwd)/$SECRET_FILE (chmod 600)"
 echo "Noch manuell in der Weboberfläche: Gerätegruppe -> Benutzer ${MESH_API_USER} -> 'Kein Desktop' anhaken (siehe README)."
