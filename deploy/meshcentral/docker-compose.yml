@@ -1,0 +1,34 @@
+# MeshCentral – Projektteil 1 (LAN-only Management-Server)
+# Läuft auf einem separaten Linux-Host im LAN, NICHT auf dem Windows-Server.
+# Werte kommen aus .env (Vorlage: .env.example). Erstinstallation: ./install.sh
+
+name: 12ps_claude_remote
+
+services:
+  meshcentral:
+    image: ghcr.io/ylianst/meshcentral:${MESHCENTRAL_VERSION:?MESHCENTRAL_VERSION fehlt in .env}
+    container_name: 12ps_claude_remote
+    restart: unless-stopped
+    environment:
+      # Eigene config.json verwenden, Container soll sie nicht überschreiben.
+      DYNAMIC_CONFIG: "false"
+      CONFIG_FILE: /opt/meshcentral/meshcentral-data/config.json
+      NODE_ENV: production
+      TZ: ${TZ:-Europe/Berlin}
+    ports:
+      # Nur auf der LAN-IP veröffentlichen (kein 0.0.0.0, kein Port 80, kein AMT-Port 4433).
+      - "${MESH_LAN_IP:?MESH_LAN_IP fehlt in .env}:${MESH_PORT:-443}:443"
+    volumes:
+      # Bind-Mounts statt anonymer Volumes: Daten liegen sichtbar neben dieser Datei
+      # und lassen sich einfach sichern.
+      - ./meshcentral-data:/opt/meshcentral/meshcentral-data          # config.json, DB, Zertifikate, auth.log
+      - ./meshcentral-files:/opt/meshcentral/meshcentral-files
+      - ./meshcentral-backups:/opt/meshcentral/meshcentral-backups
+      - ./meshcentral-recordings:/opt/meshcentral/meshcentral-recordings  # Session-Recordings (Audit)
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
